@@ -5,6 +5,7 @@ const EventEmitter = require('events')
 const app = express()
 const abortEmitter = new EventEmitter()
 
+// A very expensive operation that takes several million years to complete
 const getMeaningOfLife = token => new Promise((resolve, reject) => {
   const handleAbort = currentToken => {
     if (token === currentToken) {
@@ -18,15 +19,17 @@ const getMeaningOfLife = token => new Promise((resolve, reject) => {
   const handle = global.setTimeout(() => {
     abortEmitter.off('abort', handleAbort)
     resolve('42')
-  }, 5000)
+  }, 7500)
 })
 
 app.use(express.static('public'))
 
+// Get a unique abort token
 app.get('/abort-token', (req, res) => {
   res.end(uuidv1())
 })
 
+// Emit an abort event for a given token
 app.post('/abort/:token', (req, res) => {
   const token = req.params.token
 
@@ -38,6 +41,7 @@ app.post('/abort/:token', (req, res) => {
   abortEmitter.emit('abort', token)
 })
 
+// Get the meaning of life
 app.get('/expensive-request', (req, res) => {
   const token = req.get('abort-token')
 
