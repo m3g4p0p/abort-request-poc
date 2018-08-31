@@ -1,11 +1,13 @@
 const sendBtn = document.getElementById('send')
 const cancelBtn = document.getElementById('cancel')
+const responseEl = document.getElementById('response')
 
 let token
 
 sendBtn.addEventListener('click', () => {
   sendBtn.disabled = true
   cancelBtn.disabled = false
+  responseEl.textContent = 'pending...'
 
   fetch('/abort-token')
     .then(res => res.text())
@@ -19,7 +21,9 @@ sendBtn.addEventListener('click', () => {
       return window.fetch('expensive-request', { headers })
     })
     .then(res => res.text())
-    .then(console.log)
+    .then(text => {
+      responseEl.textContent = text
+    })
     .catch(console.error)
     .finally(() => {
       sendBtn.disabled = false

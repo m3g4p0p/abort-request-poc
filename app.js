@@ -26,7 +26,9 @@ const getMeaningOfLife = token => new Promise((resolve, reject) => {
 
 app.use(express.static('public'))
 
-// Get a unique abort token
+// Get a unique abort token; in a real app,
+// tie the token to the client IP in a lookup
+// table or something
 app.get('/abort-token', (req, res) => {
   res.end(uuidv1())
 })
