@@ -35,7 +35,10 @@ app.get('/abort-token', (req, res) => {
 
 // Emit an abort event for a given token
 app.post('/abort/:token', (req, res) => {
-  abortEmitter.emit('abort', req.params.token)
+  const { token } = req.params
+
+  abortEmitter.emit('abort', token)
+  res.end(token)
 })
 
 // Expensively get the meaning of life
