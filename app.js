@@ -27,7 +27,7 @@ app.get('/abort-token', (req, res) => {
   res.end(uuidv1())
 })
 
-app.get('/abort/:token', (req, res) => {
+app.post('/abort/:token', (req, res) => {
   const token = req.params.token
 
   if (!token) {

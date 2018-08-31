@@ -28,5 +28,7 @@ sendBtn.addEventListener('click', () => {
 })
 
 cancelBtn.addEventListener('click', () => {
-  fetch('/abort/' + token)
+  fetch('/abort/' + token, {
+    method: 'POST'
+  })
 })
