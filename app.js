@@ -11,6 +11,7 @@ const getMeaningOfLife = token => new Promise((resolve, reject) => {
     if (token === currentToken) {
       // Tidy everything up and reject
       global.clearTimeout(handle)
+      abortEmitter.off('abort', handleAbort)
       reject(new Error('aborted'))
     }
   }
@@ -32,14 +33,7 @@ app.get('/abort-token', (req, res) => {
 
 // Emit an abort event for a given token
 app.post('/abort/:token', (req, res) => {
-  const token = req.params.token
-
-  if (!token) {
-    res.sendStatus(400)
-    return res.end()
-  }
-
-  abortEmitter.emit('abort', token)
+  abortEmitter.emit('abort', req.params.token)
 })
 
 // Expensively get the meaning of life
